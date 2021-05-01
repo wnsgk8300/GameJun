@@ -12,21 +12,36 @@ class ViewController: UIViewController {
     let topicView = UIView()
     let topicLabel = UILabel()
     let setTopicLabel = UILabel()
-    let changeButton = UIButton()
+    let changeButton = UIButton(type: .system)
     let topicViewLayout = UICollectionViewFlowLayout()
     lazy var selectTopicView = UICollectionView(frame: .zero, collectionViewLayout: topicViewLayout)
     let topics = ["영화", "가수", "동물", "노래", "음식", "위인", "운동", "도시", "물건"]
     
     let settingView = UIView()
-    let groupLabel = UILabel()
-    let numLabel = UILabel()
-    let startButton = UIButton()
+    let viewInSettingView = UIView()
+    let participantsLabel = UILabel()
+    var participants = 3
+    let modeLabel = UILabel()
+    let modeChangeView = UIView()
+    let gameModes = ["노말 모드", "스파이 모드", "바보 모드"]
+    var modeChangeIndex = 0
+    let modeLeftButton = UIButton(type: .system)
+    let modeRightButton = UIButton(type: .system)
+    let startButton = UIButton(type: .system)
+    let countUpButton = UIButton(type: .system)
+    let countDownButton = UIButton(type: .system)
+    
+    let gameStartView = UIView()
+    let readyView = UIView()
+    let liarLable = UILabel()
+    let okButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUI()
-        
+        selectTopicView.isHidden = true
+        gameStartView.isHidden = true
     }
 }
 // MARK: - Datasource, Delegate
@@ -48,19 +63,60 @@ extension ViewController: UICollectionViewDataSource {
         return cell
     }
 }
-
-
+// MARK: - Selector
 extension ViewController {
     @objc
     func tapChangeButton(_ sender: UIButton) {
-        selectTopicView.alpha = 1.0
+        if selectTopicView.isHidden {
+            selectTopicView.isHidden = false
+        } else {
+            selectTopicView.isHidden = true
+        }
     }
     @objc
     func tapTopicButton(_ sender: UIButton) {
         setTopicLabel.text = sender.titleLabel?.text
-        selectTopicView.alpha = 0
+        selectTopicView.isHidden = true
     }
-    
+    @objc
+    func tapStartButton(_ sender: UIButton) {
+        gameStartView.isHidden = false
+        changeButton.isHidden = true
+    }
+    @objc
+    func tapCountUpButton(_ sender: UIButton) {
+        participants += 1
+        participantsLabel.text = "참가인원:     \(participants)명"
+    }
+    @objc
+    func tapCountDownButton(_ sender: UIButton) {
+        if participants == 3 {
+            return
+        } else {
+            participants -= 1
+            participantsLabel.text = "참가인원:     \(participants)명"
+        }
+    }
+    @objc
+    func tapModeLeftButton(_ sender: UIButton) {
+        if modeChangeIndex != 0{
+            modeChangeIndex -= 1
+            modeLabel.text = gameModes[modeChangeIndex]
+        } else {
+            modeChangeIndex = 2
+            modeLabel.text = gameModes[modeChangeIndex]
+        }
+    }
+    @objc
+    func tapModeRightButton(_ sender: UIButton) {
+        if modeChangeIndex != 2{
+            modeChangeIndex += 1
+            modeLabel.text = gameModes[modeChangeIndex]
+        } else {
+            modeChangeIndex = 0
+            modeLabel.text = gameModes[modeChangeIndex]
+        }
+    }
 }
 extension ViewController {
     func setUI() {
@@ -70,24 +126,17 @@ extension ViewController {
         
     }
     func setBasic() {
-        [topicView, settingView, selectTopicView, startButton].forEach {
+        [topicView, settingView, selectTopicView, gameStartView].forEach {
             view.addSubview($0)
         }
         topicView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(80)
             $0.centerX.equalToSuperview()
-            $0.width.equalTo(300)
+            $0.width.equalTo(240)
             $0.height.equalTo(100)
         }
-        settingView.snp.makeConstraints {
-            $0.top.equalTo(topicView.snp.bottom).offset(80)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(300)
-            $0.height.equalTo(400)
-        }
         selectTopicView.snp.makeConstraints {
-            $0.top.equalTo(settingView.snp.top).offset(20)
-            $0.centerX.equalToSuperview()
+            $0.centerX.centerY.equalTo(settingView)
             $0.width.height.equalTo(200)
         }
         
@@ -106,14 +155,84 @@ extension ViewController {
             $0.top.trailing.bottom.equalToSuperview().inset(24)
         }
         
+        settingView.snp.makeConstraints {
+            $0.top.equalTo(topicView.snp.bottom).offset(40)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(topicView.snp.width)
+        }
+        [viewInSettingView, startButton].forEach {
+            settingView.addSubview($0)
+        }
+        viewInSettingView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(20)
+            $0.width.equalTo(selectTopicView)
+            $0.bottom.equalToSuperview().inset(80)
+        }
+        startButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(viewInSettingView.snp.bottom).offset(20)
+            $0.width.equalTo(viewInSettingView.snp.width).inset(20)
+        }
+        [participantsLabel, modeLabel, countUpButton, countDownButton, modeChangeView].forEach {
+            viewInSettingView.addSubview($0)
+        }
+        participantsLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(12)
+        }
+        countUpButton.snp.makeConstraints {
+            $0.centerY.equalTo(participantsLabel)
+            $0.leading.equalTo(participantsLabel.snp.trailing).offset(12)
+        }
+        countDownButton.snp.makeConstraints {
+            $0.centerY.equalTo(participantsLabel)
+            $0.leading.equalTo(countUpButton.snp.trailing).offset(4)
+            $0.trailing.equalToSuperview().inset(12)
+        }
+        modeChangeView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(12)
+            $0.top.equalTo(participantsLabel.snp.bottom).offset(20)
+            $0.height.equalTo(24)
+        }
+        gameStartView.snp.makeConstraints {
+            $0.edges.equalTo(settingView)
+        }
+        gameStartView.addSubview(readyView)
+        readyView.snp.makeConstraints {
+            $0.top.equalTo(settingView.snp.top).offset(20)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(180)
+        }
+        
+        [modeLeftButton, modeLabel, modeRightButton].forEach {
+            modeChangeView.addSubview($0)
+        }
+        modeLabel.snp.makeConstraints {
+            $0.centerX.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(4)
+            $0.width.equalTo(80)
+        }
+        modeLeftButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(modeLabel.snp.leading).offset(-8)
+        }
+        modeRightButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalTo(modeLabel.snp.trailing).offset(8)
+        }
         
     }
     func setDetail() {
         topicView.backgroundColor = .red
         settingView.backgroundColor = .green
         selectTopicView.backgroundColor = .yellow
-        selectTopicView.alpha = 0
+        viewInSettingView.backgroundColor = .white
+        gameStartView.backgroundColor = .blue
+        
         topicLabel.text = "주제 :"
+        participantsLabel.text = "참가인원:     3명"
         
         changeButton.setTitle("변경", for: .normal)
         changeButton.addTarget(self, action: #selector(tapChangeButton(_:)), for: .touchUpInside)
@@ -121,12 +240,27 @@ extension ViewController {
         selectTopicView.dataSource = self
         selectTopicView.backgroundColor = .gray
         selectTopicView.register(SelectTopicCollectionViewCell.self, forCellWithReuseIdentifier: SelectTopicCollectionViewCell.identifier)
+        
+        startButton.setTitle("게임 시작", for: .normal)
+        startButton.addTarget(self, action: #selector(tapStartButton(_:)), for: .touchUpInside)
+        
+        countUpButton.setTitle("+", for: .normal)
+        countDownButton.setTitle("-", for: .normal)
+        countUpButton.addTarget(self, action: #selector(tapCountUpButton(_:)), for: .touchUpInside)
+        countDownButton.addTarget(self, action: #selector(tapCountDownButton(_:)), for: .touchUpInside)
+        
+        modeLabel.text = "노말 모드"
+        modeLabel.textAlignment = .center
+        modeLeftButton.setImage(UIImage(systemName: "arrowtriangle.left.fill"), for: .normal)
+        modeRightButton.setImage(UIImage(systemName: "arrowtriangle.right.fill"), for: .normal)
+        modeLeftButton.addTarget(self, action: #selector(tapModeLeftButton), for: .touchUpInside)
+        modeRightButton.addTarget(self, action: #selector(tapModeRightButton), for: .touchUpInside)
     }
     func setTopicViewLayout() {
         topicViewLayout.scrollDirection = .vertical
         topicViewLayout.itemSize = CGSize(width: 52, height: 52)
-//        topicViewLayout.minimumInteritemSpacing = 4
-//        topicViewLayout.minimumLineSpacing = 8
+        //        topicViewLayout.minimumInteritemSpacing = 4
+        //        topicViewLayout.minimumLineSpacing = 8
         topicViewLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
 }

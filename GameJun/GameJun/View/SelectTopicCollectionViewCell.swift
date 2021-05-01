@@ -11,7 +11,6 @@ final class SelectTopicCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     static let identifier = "SelectTopicCollectionViewCell"
     let topicButton = UIButton(type: .system)
-    let topicText = ["영화", "가수", "동물", "노래", "음식", "위인", "운동", "도시", "물건"]
     
     // MARK: - LifeCycle
     override init(frame: CGRect) {
