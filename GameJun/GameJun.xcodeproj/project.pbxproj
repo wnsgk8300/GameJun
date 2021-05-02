@@ -14,7 +14,7 @@
 		3C291AE226393B9C0099B51C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3C291AE026393B9C0099B51C /* LaunchScreen.storyboard */; };
 		3C291AF526393E2F0099B51C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3C291AF426393E2F0099B51C /* SnapKit */; };
 		3C291AFF26394D790099B51C /* SelectTopicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C291AFE26394D790099B51C /* SelectTopicCollectionViewCell.swift */; };
-		3C464754263D6D1F000952CD /* Topics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C464753263D6D1F000952CD /* Topics.swift */; };
+		3C464754263D6D1F000952CD /* TopicsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C464753263D6D1F000952CD /* TopicsManager.swift */; };
 		3C464757263D70E6000952CD /* LiarGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C464756263D70E6000952CD /* LiarGameViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +27,7 @@
 		3C291AE126393B9C0099B51C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3C291AE326393B9C0099B51C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C291AFE26394D790099B51C /* SelectTopicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTopicCollectionViewCell.swift; sourceTree = "<group>"; };
-		3C464753263D6D1F000952CD /* Topics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Topics.swift; sourceTree = "<group>"; };
+		3C464753263D6D1F000952CD /* TopicsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicsManager.swift; sourceTree = "<group>"; };
 		3C464756263D70E6000952CD /* LiarGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiarGameViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,7 +74,7 @@
 		3C291AEE26393C2B0099B51C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3C464753263D6D1F000952CD /* Topics.swift */,
+				3C464753263D6D1F000952CD /* TopicsManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -185,7 +185,7 @@
 				3C464757263D70E6000952CD /* LiarGameViewController.swift in Sources */,
 				3C291ADA26393B9A0099B51C /* ViewController.swift in Sources */,
 				3C291AD626393B9A0099B51C /* AppDelegate.swift in Sources */,
-				3C464754263D6D1F000952CD /* Topics.swift in Sources */,
+				3C464754263D6D1F000952CD /* TopicsManager.swift in Sources */,
 				3C291AD826393B9A0099B51C /* SceneDelegate.swift in Sources */,
 				3C291AFF26394D790099B51C /* SelectTopicCollectionViewCell.swift in Sources */,
 			);

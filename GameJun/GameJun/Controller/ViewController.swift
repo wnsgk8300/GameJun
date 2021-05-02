@@ -34,7 +34,13 @@ class ViewController: UIViewController {
     let gameStartView = UIView()
     let readyView = UIView()
     let liarLable = UILabel()
+    let curtainButton = UIButton()
     let okButton = UIButton(type: .system)
+    var liarNum = 0
+    var liarText = ""
+    var unSelected = [""]
+    
+    var countParticipants = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +48,7 @@ class ViewController: UIViewController {
         setUI()
         selectTopicView.isHidden = true
         gameStartView.isHidden = true
+        setTopicLabel.text = "영화"
     }
 }
 // MARK: - Datasource, Delegate
@@ -80,8 +87,16 @@ extension ViewController {
     }
     @objc
     func tapStartButton(_ sender: UIButton) {
+        liarText = TopicsManager.shared.topicText["\(setTopicLabel.text ?? "")"]?.randomElement() ?? ""
         gameStartView.isHidden = false
         changeButton.isHidden = true
+        countParticipants = participants
+        liarLable.text = liarText
+        liarNum = Int.random(in: 1 ... participants)
+        curtainButton.isHidden = false
+        var selceted = TopicsManager.shared.topicText["\(setTopicLabel.text ?? "")"] ?? [""]
+        selceted.removeAll(where: { $0 == liarText })
+        unSelected = selceted
     }
     @objc
     func tapCountUpButton(_ sender: UIButton) {
@@ -117,13 +132,81 @@ extension ViewController {
             modeLabel.text = gameModes[modeChangeIndex]
         }
     }
+    @objc
+    func tapCurtainButton(_ sender: UIButton) {
+        if countParticipants == liarNum {
+            switch modeLabel.text {
+            case "노말 모드":
+                liarLable.text = "라이어 당첨!"
+            case "스파이 모드":
+                liarLable.text = "당신은 스파이입니다!"
+            case "바보 모드":
+                liarLable.text = unSelected.randomElement()
+            default:
+                fatalError()
+            }
+            curtainButton.isHidden = true
+        } else {
+            curtainButton.isHidden = true
+            liarLable.text = liarText
+        }
+    }
+    @objc
+    func tapOkButton(_ sender: UIButton) {
+        if countParticipants != 1 {
+            countParticipants -= 1
+            curtainButton.isHidden = false
+        } else {
+            gameStartView.isHidden = true
+            changeButton.isHidden = false
+        }
+    }
 }
 extension ViewController {
     func setUI() {
         setBasic()
         setDetail()
         setTopicViewLayout()
+    }
+    func setDetail() {
+        topicView.backgroundColor = .red
+        settingView.backgroundColor = .green
+        selectTopicView.backgroundColor = .yellow
+        viewInSettingView.backgroundColor = .white
+        gameStartView.backgroundColor = .white
         
+        topicLabel.text = "주제 :"
+        participantsLabel.text = "참가인원:     3명"
+        
+        changeButton.setTitle("변경", for: .normal)
+        changeButton.addTarget(self, action: #selector(tapChangeButton(_:)), for: .touchUpInside)
+        
+        selectTopicView.dataSource = self
+        selectTopicView.backgroundColor = .gray
+        selectTopicView.register(SelectTopicCollectionViewCell.self, forCellWithReuseIdentifier: SelectTopicCollectionViewCell.identifier)
+        
+        startButton.setTitle("게임 시작", for: .normal)
+        startButton.addTarget(self, action: #selector(tapStartButton(_:)), for: .touchUpInside)
+        
+        countUpButton.setTitle("+", for: .normal)
+        countDownButton.setTitle("-", for: .normal)
+        countUpButton.addTarget(self, action: #selector(tapCountUpButton(_:)), for: .touchUpInside)
+        countDownButton.addTarget(self, action: #selector(tapCountDownButton(_:)), for: .touchUpInside)
+        
+        modeLabel.text = "노말 모드"
+        modeLabel.textAlignment = .center
+        modeLeftButton.setImage(UIImage(systemName: "arrowtriangle.left.fill"), for: .normal)
+        modeRightButton.setImage(UIImage(systemName: "arrowtriangle.right.fill"), for: .normal)
+        modeLeftButton.addTarget(self, action: #selector(tapModeLeftButton), for: .touchUpInside)
+        modeRightButton.addTarget(self, action: #selector(tapModeRightButton), for: .touchUpInside)
+        
+        curtainButton.backgroundColor = .red
+        curtainButton.setTitle("준비 되셨나요?", for: .normal)
+        curtainButton.addTarget(self, action: #selector(tapCurtainButton(_:)), for: .touchUpInside)
+        
+        liarLable.textAlignment = .center
+        okButton.setTitle("OK!", for: .normal)
+        okButton.addTarget(self, action: #selector(tapOkButton(_:)), for: .touchUpInside)
     }
     func setBasic() {
         [topicView, settingView, selectTopicView, gameStartView].forEach {
@@ -197,13 +280,25 @@ extension ViewController {
             $0.height.equalTo(24)
         }
         gameStartView.snp.makeConstraints {
-            $0.edges.equalTo(settingView)
+            $0.edges.equalTo(settingView).inset(24)
         }
-        gameStartView.addSubview(readyView)
-        readyView.snp.makeConstraints {
+        [liarLable, okButton, curtainButton].forEach {
+            gameStartView.addSubview($0)
+        }
+        curtainButton.snp.makeConstraints {
             $0.top.equalTo(settingView.snp.top).offset(20)
             $0.centerX.equalToSuperview()
             $0.width.height.equalTo(180)
+        }
+        liarLable.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(24)
+            $0.width.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        }
+        okButton.snp.makeConstraints {
+            $0.top.equalTo(liarLable).offset(40)
+            $0.width.equalTo(40)
+            $0.centerX.equalToSuperview()
         }
         
         [modeLeftButton, modeLabel, modeRightButton].forEach {
@@ -222,40 +317,8 @@ extension ViewController {
             $0.centerY.equalToSuperview()
             $0.leading.equalTo(modeLabel.snp.trailing).offset(8)
         }
-        
     }
-    func setDetail() {
-        topicView.backgroundColor = .red
-        settingView.backgroundColor = .green
-        selectTopicView.backgroundColor = .yellow
-        viewInSettingView.backgroundColor = .white
-        gameStartView.backgroundColor = .blue
-        
-        topicLabel.text = "주제 :"
-        participantsLabel.text = "참가인원:     3명"
-        
-        changeButton.setTitle("변경", for: .normal)
-        changeButton.addTarget(self, action: #selector(tapChangeButton(_:)), for: .touchUpInside)
-        
-        selectTopicView.dataSource = self
-        selectTopicView.backgroundColor = .gray
-        selectTopicView.register(SelectTopicCollectionViewCell.self, forCellWithReuseIdentifier: SelectTopicCollectionViewCell.identifier)
-        
-        startButton.setTitle("게임 시작", for: .normal)
-        startButton.addTarget(self, action: #selector(tapStartButton(_:)), for: .touchUpInside)
-        
-        countUpButton.setTitle("+", for: .normal)
-        countDownButton.setTitle("-", for: .normal)
-        countUpButton.addTarget(self, action: #selector(tapCountUpButton(_:)), for: .touchUpInside)
-        countDownButton.addTarget(self, action: #selector(tapCountDownButton(_:)), for: .touchUpInside)
-        
-        modeLabel.text = "노말 모드"
-        modeLabel.textAlignment = .center
-        modeLeftButton.setImage(UIImage(systemName: "arrowtriangle.left.fill"), for: .normal)
-        modeRightButton.setImage(UIImage(systemName: "arrowtriangle.right.fill"), for: .normal)
-        modeLeftButton.addTarget(self, action: #selector(tapModeLeftButton), for: .touchUpInside)
-        modeRightButton.addTarget(self, action: #selector(tapModeRightButton), for: .touchUpInside)
-    }
+    
     func setTopicViewLayout() {
         topicViewLayout.scrollDirection = .vertical
         topicViewLayout.itemSize = CGSize(width: 52, height: 52)

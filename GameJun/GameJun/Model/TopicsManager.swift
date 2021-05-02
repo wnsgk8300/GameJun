@@ -8,8 +8,8 @@
 import Foundation
 
 
-struct Topics {
-    static var shared = Topics()
+struct TopicsManager {
+    static var shared = TopicsManager()
     let topicText =
         ["영화": ["친구", "터미널", "귀멸의 칼날", "벰파이어와의 인터뷰"],
          "가수": ["트와이스", "검정치마", "아이유", "임창정", "빈지노"],
