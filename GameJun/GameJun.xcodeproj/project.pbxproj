@@ -19,6 +19,7 @@
 		3CA4CD95263FBA1300DB4419 /* InitialQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4CD94263FBA1300DB4419 /* InitialQuizViewController.swift */; };
 		3CA4CD99263FCD9A00DB4419 /* MainVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4CD98263FCD9A00DB4419 /* MainVIewController.swift */; };
 		3CD7041D264684D500581A29 /* HunminGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7041C264684D500581A29 /* HunminGameViewController.swift */; };
+		3CD7041F2647C9DF00581A29 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7041E2647C9DF00581A29 /* TimerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		3CA4CD94263FBA1300DB4419 /* InitialQuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialQuizViewController.swift; sourceTree = "<group>"; };
 		3CA4CD98263FCD9A00DB4419 /* MainVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVIewController.swift; sourceTree = "<group>"; };
 		3CD7041C264684D500581A29 /* HunminGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HunminGameViewController.swift; sourceTree = "<group>"; };
+		3CD7041E2647C9DF00581A29 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 				3C291AD926393B9A0099B51C /* LiarGameViewController.swift */,
 				3CA4CD94263FBA1300DB4419 /* InitialQuizViewController.swift */,
 				3CD7041C264684D500581A29 /* HunminGameViewController.swift */,
+				3CD7041E2647C9DF00581A29 /* TimerViewController.swift */,
 				3C291AF126393C6E0099B51C /* Support */,
 			);
 			path = Controller;
@@ -191,6 +194,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CD7041F2647C9DF00581A29 /* TimerViewController.swift in Sources */,
 				3C291ADA26393B9A0099B51C /* LiarGameViewController.swift in Sources */,
 				3CA24DC726442681008610FF /* InitialQuizManager.swift in Sources */,
 				3C291AD626393B9A0099B51C /* AppDelegate.swift in Sources */,
@@ -341,6 +345,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z5M4ZXWCX6;
 				INFOPLIST_FILE = GameJun/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -360,6 +365,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z5M4ZXWCX6;
 				INFOPLIST_FILE = GameJun/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

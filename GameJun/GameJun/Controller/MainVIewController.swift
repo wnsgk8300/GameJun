@@ -10,9 +10,10 @@ import SnapKit
 
 class MainVIewController: UIViewController {
     let titleLabel = UILabel()
-    let LiarButton = UIButton(type: .system)
-    let InitialButton = UIButton(type: .system)
-    let HunminButton = UIButton(type: .system)
+    let liarButton = UIButton(type: .system)
+    let initialButton = UIButton(type: .system)
+    let hunminButton = UIButton(type: .system)
+    let timerButton = UIButton(type: .system)
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -22,19 +23,20 @@ class MainVIewController: UIViewController {
 extension MainVIewController {
     @objc
     func tapMenuButton(_ sender: UIButton) {
+        var nextVC = UIViewController()
         switch sender.titleLabel?.text {
         case "라이어 게임":
-            let nextVC = LiarGameViewController()
-            present(nextVC, animated: true, completion: nil)
+            nextVC = LiarGameViewController()
         case "초성 퀴즈":
-            let nextVC = InitialQuizViewController()
-            present(nextVC, animated: true, completion: nil)
+            nextVC = InitialQuizViewController()
         case "훈민정음 게임":
-            let nextVC = HunminGameViewController()
-            present(nextVC, animated: true, completion: nil)
+            nextVC = HunminGameViewController()
+        case "폭탄 돌리기":
+            nextVC = TimerViewController()
         default:
             fatalError()
         }
+        present(nextVC, animated: true, completion: nil)
     }
 }
 // MARK: - UI
@@ -48,38 +50,42 @@ extension MainVIewController {
         titleLabel.font = titleLabel.font.withSize(30)
         titleLabel.text = "GameJun!"
         
-        LiarButton.setTitle("라이어 게임", for: .normal)
-        LiarButton.addTarget(self, action: #selector(tapMenuButton(_:)), for: .touchUpInside)
+        liarButton.setTitle("라이어 게임", for: .normal)
         
-        InitialButton.setTitle("초성 퀴즈", for: .normal)
-        InitialButton.addTarget(self, action: #selector(tapMenuButton(_:)), for: .touchUpInside)
+        initialButton.setTitle("초성 퀴즈", for: .normal)
         
-        HunminButton.setTitle("훈민정음 게임", for: .normal)
-        HunminButton.addTarget(self, action: #selector(tapMenuButton(_:)), for: .touchUpInside)
+        hunminButton.setTitle("훈민정음 게임", for: .normal)
+
+        timerButton.setTitle("폭탄 돌리기", for: .normal)
         
-        [LiarButton, InitialButton, HunminButton].forEach {
+        [liarButton, initialButton, hunminButton, timerButton].forEach {
             $0.titleLabel?.font = .systemFont(ofSize: 24)
+            $0.addTarget(self, action: #selector(tapMenuButton(_:)), for: .touchUpInside)
         }
     }
     final private func setLayout() {
-        [titleLabel, LiarButton, InitialButton, HunminButton].forEach {
+        [titleLabel, liarButton, initialButton, hunminButton, timerButton].forEach {
             view.addSubview($0)
         }
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
         }
-        LiarButton.snp.makeConstraints {
+        liarButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(40)
         }
-        InitialButton.snp.makeConstraints {
+        initialButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(LiarButton.snp.bottom).offset(20)
+            $0.top.equalTo(liarButton.snp.bottom).offset(20)
         }
-        HunminButton.snp.makeConstraints {
+        hunminButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(InitialButton.snp.bottom).offset(20)
+            $0.top.equalTo(initialButton.snp.bottom).offset(20)
+        }
+        timerButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(hunminButton.snp.bottom).offset(20)
         }
     }
 }

@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 
 class InitialQuizViewController: UIViewController {
-    var str:NSString = "한글 테스트4"
-    var _out:String = "";
+    
+    
     
     let createButton = UIButton(type: .system)
     let startButton = UIButton(type: .system)
@@ -21,11 +21,16 @@ class InitialQuizViewController: UIViewController {
     let answerButton = UIButton(type: .system)
     let nextButton = UIButton(type: .system)
     
+    var movieTitle = String()
+    var movieTitles = [""]
+    
 //    var _out2:NSString = "";
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
         view.backgroundColor = .white
+        answerTextField.isHidden = true
+        nextButton.isHidden = true
     }
     
 
@@ -35,21 +40,23 @@ class InitialQuizViewController: UIViewController {
 // MARK: - 초성 변환
 extension InitialQuizViewController {
 
-    func initial() {
-        for i in 0..<str.length{
-            let oneChar:UniChar = str.character(at:i)
+    func initial(movieTitle: NSString) -> String {
+        var initial:String = "";
+        for i in 0..<movieTitle.length{
+            let oneChar:UniChar = movieTitle.character(at:i)
             if( oneChar >= 0xAC00 && oneChar <= 0xD7A3 ){
                 var firstCodeValue = ((oneChar - 0xAC00)/28)/21
                 firstCodeValue += 0x1100;
-                _out = _out.appending(String(format:"%C", firstCodeValue))
+                initial = initial.appending(String(format:"%C", firstCodeValue))
 //                _out2 = _out2.appendingFormat("%C", firstCodeValue)
             }else{
-                _out = _out.appending(String(format:"%C", oneChar))
+                initial = initial.appending(String(format:"%C", oneChar))
 //                _out2 = _out2.appendingFormat("%C", oneChar)
             }
         }
-        print(_out)
+//        print(initial)
 //        print(_out2)
+        return initial
     }
 }
 extension InitialQuizViewController {
@@ -58,9 +65,12 @@ extension InitialQuizViewController {
         gameView.isHidden = false
         switch sender {
         case startButton:
-            print("start")
+            nextButton.isHidden = false
+            movieTitles = InitialQuizManager.shared.movieTitle
+            movieTitle = movieTitles.randomElement() ?? ""
+            movieTitleLabel.text = initial(movieTitle: movieTitle as NSString)
         case createButton:
-            print("create")
+            answerTextField.isHidden = false
         default:
             fatalError()
         }
@@ -69,9 +79,23 @@ extension InitialQuizViewController {
     func tapGameButton(_ sender: UIButton) {
         switch sender {
         case answerButton:
-            print("answer")
+            movieTitleLabel.text = movieTitle as String
+            answerButton.isHidden = true
         case nextButton:
-            print("next")
+            movieTitles.removeAll(where: { $0 == movieTitle as String })
+            if movieTitles.count == 0 {
+                movieTitleLabel.text = "게임 끝!"
+                answerButton.isHidden = true
+                nextButton.setTitle("확인", for: .normal)
+            } else {
+                answerButton.isHidden = false
+                movieTitle = movieTitles.randomElement() ?? ""
+                movieTitleLabel.text = initial(movieTitle: movieTitle as NSString)
+            }
+            if nextButton.titleLabel?.text == "확인" {
+                gameView.isHidden = true
+                nextButton.setTitle("다음 문제", for: .normal)
+            }
         default:
             fatalError()
         }
@@ -85,7 +109,7 @@ extension InitialQuizViewController {
         setLayout()
     }
     final private func setBasics() {
-        [startButton, createButton, answerButton, nextButton].forEach {
+        [startButton, createButton].forEach {
             $0.titleLabel?.font = .systemFont(ofSize: 24)
             $0.addTarget(self, action: #selector(tapMainButton(_:)), for: .touchUpInside)
         }
@@ -93,7 +117,7 @@ extension InitialQuizViewController {
         createButton.setTitle("문제 내기", for: .normal)
         
         gameView.isHidden = true
-        gameView.backgroundColor = .red
+        gameView.backgroundColor = .white
         
         [answerButton, nextButton].forEach {
             $0.titleLabel?.font = .systemFont(ofSize: 24)
@@ -101,6 +125,13 @@ extension InitialQuizViewController {
         }
         answerButton.setTitle("정답 확인하기", for: .normal)
         nextButton.setTitle("다음 문제", for: .normal)
+        
+        movieTitleLabel.font = .systemFont(ofSize: 60)
+        movieTitleLabel.textAlignment = .center
+        movieTitleLabel.numberOfLines = 2
+        
+        answerTextField.placeholder = "제목을 입력하세요"
+        answerTextField.text = "dd"
     }
     
     final private func setLayout() {
@@ -118,20 +149,27 @@ extension InitialQuizViewController {
         gameView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        [movieTitleLabel, answerButton, nextButton].forEach {
+        [movieTitleLabel, answerButton, nextButton, answerTextField].forEach {
             gameView.addSubview($0)
         }
         movieTitleLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
-            $0.top.equalToSuperview().offset(60)
+            $0.centerY.equalToSuperview().offset(-80)
         }
         answerButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(movieTitleLabel.snp.bottom).offset(60)
+            $0.centerY.equalToSuperview().offset(20)
         }
         nextButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(answerButton.snp.bottom).offset(24)
+        }
+        answerTextField.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.leading.top.equalToSuperview()
+//            $0.top.equalTo(nextButton.snp.bottom)
+//            $0.width.equalTo(200)
         }
     }
 }
