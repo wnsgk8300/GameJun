@@ -132,6 +132,8 @@ extension InitialQuizViewController {
         
         answerTextField.placeholder = "제목을 입력하세요"
         answerTextField.text = "dd"
+        
+        
     }
     
     final private func setLayout() {
