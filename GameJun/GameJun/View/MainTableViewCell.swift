@@ -33,8 +33,10 @@ extension MainTableViewCell {
         setLayout()
     }
     final private func setBasics() {
-        gameTitleLabel.font = gameTitleLabel.font.withSize(24)
-//        gameTitleLabel.textColor = .white
+//        gameTitleLabel.font = gameTitleLabel.font.withSize(24)
+        gameTitleLabel.font = UIFont.boldSystemFont(ofSize: 24.0)
+
+        gameTitleLabel.textColor = .white
         
 //        gameImageView.backgroundColor = .white
     }
@@ -49,7 +51,7 @@ extension MainTableViewCell {
         }
         gameTitleLabel.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-            $0.leading.equalTo(gameImageView.snp.trailing).offset(60)
+            $0.leading.equalTo(gameImageView.snp.trailing).offset(80)
         }
     }
 }
