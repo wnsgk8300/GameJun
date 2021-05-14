@@ -15,6 +15,7 @@
 		3C291AF526393E2F0099B51C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3C291AF426393E2F0099B51C /* SnapKit */; };
 		3C291AFF26394D790099B51C /* SelectTopicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C291AFE26394D790099B51C /* SelectTopicCollectionViewCell.swift */; };
 		3C464754263D6D1F000952CD /* LiarGameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C464753263D6D1F000952CD /* LiarGameManager.swift */; };
+		3C6D0408264D1ED800EE08F5 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6D0407264D1ED800EE08F5 /* DismissButton.swift */; };
 		3C7FCE24264ABD4E00E41B74 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C7FCE23264ABD4E00E41B74 /* MainTableViewCell.swift */; };
 		3CA24DC726442681008610FF /* InitialQuizManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA24DC626442681008610FF /* InitialQuizManager.swift */; };
 		3CA4CD95263FBA1300DB4419 /* InitialQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CA4CD94263FBA1300DB4419 /* InitialQuizViewController.swift */; };
@@ -33,6 +34,7 @@
 		3C291AE326393B9C0099B51C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3C291AFE26394D790099B51C /* SelectTopicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTopicCollectionViewCell.swift; sourceTree = "<group>"; };
 		3C464753263D6D1F000952CD /* LiarGameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiarGameManager.swift; sourceTree = "<group>"; };
+		3C6D0407264D1ED800EE08F5 /* DismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		3C7FCE23264ABD4E00E41B74 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		3CA24DC626442681008610FF /* InitialQuizManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialQuizManager.swift; sourceTree = "<group>"; };
 		3CA4CD94263FBA1300DB4419 /* InitialQuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialQuizViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 			children = (
 				3C291AFE26394D790099B51C /* SelectTopicCollectionViewCell.swift */,
 				3C7FCE23264ABD4E00E41B74 /* MainTableViewCell.swift */,
+				3C6D0407264D1ED800EE08F5 /* DismissButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				3CA24DC726442681008610FF /* InitialQuizManager.swift in Sources */,
 				3C291AD626393B9A0099B51C /* AppDelegate.swift in Sources */,
 				3CD7041D264684D500581A29 /* HunminGameViewController.swift in Sources */,
+				3C6D0408264D1ED800EE08F5 /* DismissButton.swift in Sources */,
 				3C464754263D6D1F000952CD /* LiarGameManager.swift in Sources */,
 				3CA4CD95263FBA1300DB4419 /* InitialQuizViewController.swift in Sources */,
 				3C291AD826393B9A0099B51C /* SceneDelegate.swift in Sources */,

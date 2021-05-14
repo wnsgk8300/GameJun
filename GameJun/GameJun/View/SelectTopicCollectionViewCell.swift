@@ -29,12 +29,13 @@ extension SelectTopicCollectionViewCell {
         setLayout()
     }
     final private func setBasics() {
+        topicButton.titleLabel?.font = .systemFont(ofSize: 24)
+        topicButton.setTitleColor(.black, for: .normal)
+    }
+    final private func setLayout() {
         contentView.addSubview(topicButton)
         topicButton.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-    final private func setLayout() {
-        
     }
 }

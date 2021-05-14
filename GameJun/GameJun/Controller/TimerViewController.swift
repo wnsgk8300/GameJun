@@ -8,19 +8,20 @@
 import UIKit
 import SnapKit
 import AVFoundation
-  
+
 class TimerViewController: UIViewController {
-    let timeLabel = UILabel()
+    //    let timeLabel = UILabel()
     var timer:Timer?
     var timeLeft = 0
     let timeTextField = UITextField()
-    let button = UIButton(type: .system)
+    let button = playButton()
     let systemSoundID: SystemSoundID = 1005
-    let bombImageView = UIImageView()
+    var bombImageView = UIImageView()
+    let dismissButton = DismissButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        view.backgroundColor = .black
         setUI()
     }
 }
@@ -30,22 +31,44 @@ extension TimerViewController {
     func onTimerFires()
     {
         timeLeft -= 1
-        timeLabel.text = "\(timeLeft) seconds left"
+        //        timeLabel.text = "\(timeLeft) seconds left"
+        transform()
         if timeLeft <= 0 {
-            bombImageView.image = UIImage(named: "boom")
+            bombImageView.stopAnimating()
+            bombImageView.image = UIImage(named: "pixelBoom")
             AudioServicesPlaySystemSound (systemSoundID)
             timer?.invalidate()
             timer = nil
+            button.isHidden = false
         }
+    }
+    @objc
+    func tapButton(_ sender: UIButton) {
+        bombImageView.image = UIImage(named: "pixelBomb")
+        timeLeft = Int(timeTextField.text ?? "0") ?? 0
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
+        //        timeLabel.text = "\(timeLeft) seconds left"
+        button.isHidden = true
+    }
+    @objc
+    func tapDismissButton(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 extension TimerViewController {
-    @objc
-    func tapButton(_ sender: UIButton) {
-        timeLeft = Int(timeTextField.text ?? "0") ?? 0
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
-        timeLabel.text = "\(timeLeft) seconds left"
+    
+    func transform() {
+        UIView.animate(withDuration: 1.0, animations: {
+            self.bombImageView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        }){
+            (_) in
+            UIView.animate(withDuration: 1.0) {
+                self.bombImageView.transform = CGAffineTransform.identity
+            }
+        }
     }
+    
+    
 }
 // MARK: - UI
 extension TimerViewController {
@@ -54,17 +77,27 @@ extension TimerViewController {
         setLayout()
     }
     final private func setBasics() {
-        button.setTitle("시작하기", for: .normal)
+        
         button.addTarget(self, action: #selector(tapButton(_:)), for: .touchUpInside)
-               
+        button.tintColor = .white
+        button.imageName = "4"
+        
+        
         timeTextField.placeholder = "시간 입력"
         timeTextField.keyboardType = .numberPad
         timeTextField.textAlignment = .center
+        timeTextField.backgroundColor = .white
+        timeTextField.layer.borderWidth = 2.0
+        timeTextField.layer.borderColor = UIColor.gray.cgColor
         
-        bombImageView.image = UIImage(named: "bomb")
+        bombImageView.image = UIImage(named: "pixelBomb")
+        
+        dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
+        
+        
     }
     final private func setLayout() {
-        [timeLabel, button, timeTextField, bombImageView].forEach {
+        [button, timeTextField, bombImageView, dismissButton].forEach {
             view.addSubview($0)
         }
         bombImageView.snp.makeConstraints {
@@ -72,17 +105,21 @@ extension TimerViewController {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(40)
             $0.width.height.equalTo(240)
         }
-        timeLabel.snp.makeConstraints {
-            $0.centerX.centerY.equalToSuperview()
-        }
+        //        timeLabel.snp.makeConstraints {
+        //            $0.centerX.centerY.equalToSuperview()
+        //        }
         timeTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(timeLabel.snp.bottom).offset(20)
+            $0.centerY.equalToSuperview().offset(20)
             $0.width.equalTo(80)
         }
         button.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(timeTextField.snp.bottom).offset(20)
+            $0.centerY.equalToSuperview().offset(80)
+        }
+        dismissButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
 }

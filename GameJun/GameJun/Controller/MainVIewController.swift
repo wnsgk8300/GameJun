@@ -10,7 +10,7 @@ import SnapKit
 
 class MainVIewController: UIViewController {
     let menuTableView = UITableView()
-    let titleLabel = UILabel()
+    let titleImage = UIImageView()
     let bottomImageView = UIImageView()
     let games = ["라이어 게임", "영화 초성퀴즈", "훈민정음 게임", "폭탄 돌리기"]
 //    let gameImages = ["LiarGame", "InitialQuiz", "HunminGame", "TimerGame"]
@@ -21,7 +21,8 @@ class MainVIewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = mainBackColor
-        
+        self.modalPresentationStyle = .overFullScreen
+
         menuTableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
         menuTableView.dataSource = self
         menuTableView.delegate = self
@@ -48,6 +49,7 @@ extension MainVIewController: UITableViewDelegate {
             fatalError()
         }
         present(nextVC, animated: true, completion: nil)
+
     }
     
 }
@@ -61,6 +63,7 @@ extension MainVIewController: UITableViewDataSource {
         guard let menuCell = menuTableView.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as? MainTableViewCell else { fatalError() }
         menuCell.gameImageView.image = UIImage(named: gameImages[indexPath.row])
         menuCell.gameTitleLabel.text = games[indexPath.row]
+        menuCell.selectionStyle =  .none
         return menuCell
     }
     
@@ -74,11 +77,7 @@ extension MainVIewController {
         setLayout()
     }
     final private func setBasics() {
-        titleLabel.textAlignment = .center
-        titleLabel.font = titleLabel.font.withSize(40)
-        titleLabel.textColor = .white
-        titleLabel.text = "게임이닭!"
-        
+        titleImage.image = UIImage(named: "title")
         
         menuTableView.rowHeight = 100
         menuTableView.separatorStyle = .none
@@ -89,17 +88,19 @@ extension MainVIewController {
 
     }
     final private func setLayout() {
-        [menuTableView ,titleLabel, bottomImageView].forEach {
+        [menuTableView ,titleImage, bottomImageView].forEach {
             view.addSubview($0)
         }
         menuTableView.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(40)
+            $0.top.equalTo(titleImage.snp.bottom).offset(28)
             $0.bottom.equalTo(bottomImageView.snp.top).offset(20)
             $0.leading.trailing.equalToSuperview()
         }
-        titleLabel.snp.makeConstraints {
+        titleImage.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(32)
+            $0.width.equalTo(240)
+            $0.height.equalTo(120)
         }
         bottomImageView.snp.makeConstraints {
 //            $0.top.equalTo(menuTableView.snp.bottom).offset(20)

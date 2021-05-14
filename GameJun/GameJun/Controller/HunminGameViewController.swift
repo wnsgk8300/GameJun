@@ -11,12 +11,13 @@ import SnapKit
 class HunminGameViewController: UIViewController {
     let initial = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]
     let initialLabel = UILabel()
-    let startButton = UIButton(type: .system)
+    let startButton = playButton()
     var initialQuizText = ""
+    let dismissButton = DismissButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         setUI()
     }
     func gameStart() {
@@ -31,6 +32,10 @@ extension HunminGameViewController {
     func tapStartButton(_ sender: UIButton) {
         gameStart()
     }
+    @objc
+    func tapDismissButton(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 // MARK: - UI
 extension HunminGameViewController {
@@ -39,24 +44,36 @@ extension HunminGameViewController {
         setLayout()
     }
     final private func setBasics() {
-        startButton.setTitle("플레이!", for: .normal)
         startButton.addTarget(self, action: #selector(tapStartButton(_:)), for: .touchUpInside)
-        startButton.titleLabel?.font = .systemFont(ofSize: 60)
+        startButton.imageName = "3"
         
+        initialLabel.text = "  "
         initialLabel.textAlignment = .center
-        initialLabel.font = initialLabel.font.withSize(80)
+        initialLabel.font = initialLabel.font.withSize(120)
+        initialLabel.textColor = .white
+        initialLabel.layer.cornerRadius = 10
+        initialLabel.layer.borderColor = UIColor.white.cgColor
+        initialLabel.layer.borderWidth = 2
+        
+        dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
+
     }
     final private func setLayout() {
-        [initialLabel, startButton].forEach {
+        [initialLabel, startButton, dismissButton].forEach {
             view.addSubview($0)
         }
         initialLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(-80)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(100)
+            $0.width.equalTo(300)
         }
         startButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(40)
+            $0.centerY.equalToSuperview().offset(80)
+        }
+        dismissButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
 }

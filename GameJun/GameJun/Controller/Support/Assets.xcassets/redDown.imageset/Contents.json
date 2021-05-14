@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "redDown.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "bomb1.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
