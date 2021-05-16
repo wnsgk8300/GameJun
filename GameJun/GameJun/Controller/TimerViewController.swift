@@ -18,6 +18,7 @@ class TimerViewController: UIViewController {
     let systemSoundID: SystemSoundID = 1005
     var bombImageView = UIImageView()
     let dismissButton = DismissButton()
+    let secLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,8 @@ extension TimerViewController {
             timer?.invalidate()
             timer = nil
             button.isHidden = false
+            timeTextField.isHidden = false
+            secLabel.isHidden = false
         }
     }
     @objc
@@ -49,6 +52,8 @@ extension TimerViewController {
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
         //        timeLabel.text = "\(timeLeft) seconds left"
         button.isHidden = true
+        timeTextField.isHidden = true
+        secLabel.isHidden = true
     }
     @objc
     func tapDismissButton(_ sender: UIButton) {
@@ -83,7 +88,7 @@ extension TimerViewController {
         button.imageName = "4"
         
         
-        timeTextField.placeholder = "시간 입력"
+        timeTextField.text = "15"
         timeTextField.keyboardType = .numberPad
         timeTextField.textAlignment = .center
         timeTextField.backgroundColor = .white
@@ -93,11 +98,13 @@ extension TimerViewController {
         bombImageView.image = UIImage(named: "pixelBomb")
         
         dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
-        
+        secLabel.text = "초"
+        secLabel.textColor = .white
+        secLabel.font = secLabel.font.withSize(20)
         
     }
     final private func setLayout() {
-        [button, timeTextField, bombImageView, dismissButton].forEach {
+        [button, timeTextField, bombImageView, dismissButton, secLabel].forEach {
             view.addSubview($0)
         }
         bombImageView.snp.makeConstraints {
@@ -111,7 +118,11 @@ extension TimerViewController {
         timeTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(20)
-            $0.width.equalTo(80)
+            $0.width.height.equalTo(40)
+        }
+        secLabel.snp.makeConstraints {
+            $0.centerY.equalTo(timeTextField)
+            $0.leading.equalTo(timeTextField.snp.trailing).offset(8)
         }
         button.snp.makeConstraints {
             $0.centerX.equalToSuperview()

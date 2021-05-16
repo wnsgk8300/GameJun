@@ -92,7 +92,7 @@ extension MainVIewController {
             view.addSubview($0)
         }
         menuTableView.snp.makeConstraints {
-            $0.top.equalTo(titleImage.snp.bottom).offset(28)
+            $0.top.equalTo(titleImage.snp.bottom).offset(20)
             $0.bottom.equalTo(bottomImageView.snp.top).offset(20)
             $0.leading.trailing.equalToSuperview()
         }
