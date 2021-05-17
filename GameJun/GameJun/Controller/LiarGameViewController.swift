@@ -16,6 +16,7 @@ class LiarGameViewController: UIViewController {
     let topicViewLayout = UICollectionViewFlowLayout()
     lazy var selectTopicView = UICollectionView(frame: .zero, collectionViewLayout: topicViewLayout)
     let topics = ["영화", "가수", "동물", "노래", "음식", "위인", "운동", "도시", "어플"]
+    var modeExplainLabel = UILabel()
     
     let settingView = UIView()
     let viewInSettingView = UIView()
@@ -38,6 +39,7 @@ class LiarGameViewController: UIViewController {
     let curtainButton = UIButton()
     let okButton = UIButton()
     var liarNum = 0
+    var spyNum = 0
     var liarText = ""
     var unSelected = [""]
     
@@ -51,6 +53,19 @@ class LiarGameViewController: UIViewController {
         selectTopicView.isHidden = true
         gameStartView.isHidden = true
         setTopicLabel.text = "영화"
+        
+    }
+    func modeFunction() {
+        switch modeLabel.text {
+        case "노말 모드":
+            modeExplainLabel.text = ""
+        case "바보 모드":
+            modeExplainLabel.text = "라이어는 다른 사람과 다른 제시어를 받는다"
+        case "스파이 모드":
+            modeExplainLabel.text = "스파이는 라이어가 제시어를 유추할 수 있도록 설명한다. \n투표에서 스파이가 뽑히면 스파이와 라이어 모두 패배! \n라이어가 뽑히면, 제시어를 맞출경우 라이어와 스파이의 승리!"
+        default:
+            fatalError()
+        }
     }
 }
 // MARK: - Datasource, Delegate
@@ -68,7 +83,6 @@ extension LiarGameViewController: UICollectionViewDataSource {
         cell.layer.cornerRadius = 10
         cell.layer.borderColor = UIColor.black.cgColor
         cell.layer.borderWidth = 2
-        
         return cell
     }
 }
@@ -76,16 +90,20 @@ extension LiarGameViewController: UICollectionViewDataSource {
 extension LiarGameViewController {
     @objc
     func tapChangeButton(_ sender: UIButton) {
-        startButton.isHidden = true
         if selectTopicView.isHidden {
             selectTopicView.isHidden = false
+            startButton.isHidden = true
+            modeExplainLabel.isHidden = true
         } else {
             selectTopicView.isHidden = true
+            startButton.isHidden = false
+            modeExplainLabel.isHidden = false
         }
     }
     @objc
     func tapTopicButton(_ sender: UIButton) {
         startButton.isHidden = false
+        modeExplainLabel.isHidden = false
         setTopicLabel.text = sender.titleLabel?.text
         selectTopicView.isHidden = true
     }
@@ -97,6 +115,11 @@ extension LiarGameViewController {
         countParticipants = participants
         liarLable.text = liarText
         liarNum = Int.random(in: 1 ... participants)
+        spyNum = Int.random(in: 1 ... participants)
+        while spyNum == liarNum
+        {
+            spyNum = Int.random(in: 1 ... participants)
+        }
         curtainButton.isHidden = false
         var selceted = LiarGameManager.shared.topicText["\(setTopicLabel.text ?? "")"] ?? [""]
         selceted.removeAll(where: { $0 == liarText })
@@ -127,6 +150,7 @@ extension LiarGameViewController {
             modeChangeIndex = 2
             modeLabel.text = gameModes[modeChangeIndex]
         }
+        modeFunction()
     }
     @objc
     func tapModeRightButton(_ sender: UIButton) {
@@ -137,6 +161,7 @@ extension LiarGameViewController {
             modeChangeIndex = 0
             modeLabel.text = gameModes[modeChangeIndex]
         }
+        modeFunction()
     }
     @objc
     func tapCurtainButton(_ sender: UIButton) {
@@ -145,7 +170,7 @@ extension LiarGameViewController {
             case "노말 모드":
                 liarLable.text = "라이어 당첨!"
             case "스파이 모드":
-                liarLable.text = "당신은 스파이입니다!"
+                liarLable.text = "라이어 당첨!"
             case "바보 모드":
                 liarLable.text = unSelected.randomElement()
             default:
@@ -156,6 +181,9 @@ extension LiarGameViewController {
             curtainButton.isHidden = true
             liarLable.text = liarText
         }
+        if countParticipants == spyNum && modeLabel.text == "스파이 모드" {
+           liarLable.text?.append("\n당신은 '스파이'입니다!")
+       }
     }
     @objc
     func tapOkButton(_ sender: UIButton) {
@@ -243,14 +271,16 @@ extension LiarGameViewController {
         }
         
         curtainButton.backgroundColor = .red
-        curtainButton.setTitle("준비 되셨나요?", for: .normal)
+        curtainButton.setTitle("준비 되셨나요?\n터치!", for: .normal)
+        curtainButton.titleLabel?.numberOfLines = 2
+        curtainButton.titleLabel?.textAlignment = .center
         curtainButton.addTarget(self, action: #selector(tapCurtainButton(_:)), for: .touchUpInside)
         curtainButton.layer.cornerRadius = 10
         curtainButton.layer.borderWidth = 2
         curtainButton.titleLabel?.font = .systemFont(ofSize: 40)
         
         liarLable.textAlignment = .center
-        liarLable.numberOfLines = 2
+        liarLable.numberOfLines = 4
         liarLable.font = .boldSystemFont(ofSize: 32)
         liarLable.textColor = .white
         
@@ -260,10 +290,13 @@ extension LiarGameViewController {
         okButton.titleLabel?.font = .systemFont(ofSize: 24)
         
         dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
-
+        
+        modeExplainLabel.textColor = .white
+        modeExplainLabel.numberOfLines = 3
+        modeExplainLabel.font = .systemFont(ofSize: 12)
     }
     func setBasic() {
-        [setTopicLabel, topicLabel, changeButton, settingView, selectTopicView, gameStartView, startButton, dismissButton].forEach {
+        [setTopicLabel, topicLabel, changeButton, settingView, selectTopicView, gameStartView, startButton, dismissButton, modeExplainLabel].forEach {
             view.addSubview($0)
         }
 //        topicView.snp.makeConstraints {
@@ -275,7 +308,7 @@ extension LiarGameViewController {
         selectTopicView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(setTopicLabel.snp.bottom).offset(20)
-            $0.width.height.equalTo(300)
+            $0.width.height.equalTo(312)
         }
         
 //        [topicLabel, setTopicLabel, changeButton].forEach {
@@ -285,8 +318,9 @@ extension LiarGameViewController {
 //            $0.top.bottom.equalToSuperview().inset(24)
 //            $0.leading.equalTo(topicLabel.snp.trailing).offset(40)
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().offset(80)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
             $0.width.equalTo(100)
+            $0.height.equalTo(60)
         }
         topicLabel.snp.makeConstraints {
 //            $0.top.leading.bottom.equalToSuperview().inset(24)
@@ -301,26 +335,20 @@ extension LiarGameViewController {
             $0.width.equalTo(80)
         }
         
-//        settingView.snp.makeConstraints {
-////            $0.top.equalTo(topicView.snp.bottom).offset(40)
-////            $0.centerX.equalToSuperview()
-////            $0.width.height.equalTo(topicView.snp.width)
-//            $0.top.equalTo(setTopicLabel.snp.bottom).offset(40)
-//            $0.centerX.equalToSuperview()
-//            $0.width.height.equalTo(200)
-//        }
-
-        
         settingView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(setTopicLabel.snp.bottom).offset(20)
             $0.width.equalTo(selectTopicView)
-            $0.bottom.equalTo(startButton.snp.top).offset(-20)
+            $0.bottom.equalTo(startButton.snp.top).offset(-40)
+        }
+        modeExplainLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(settingView.snp.bottom).offset(4)
         }
         
         startButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(100)
+            $0.centerY.equalToSuperview().offset(120)
         }
         dismissButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
@@ -359,11 +387,11 @@ extension LiarGameViewController {
             gameStartView.addSubview($0)
         }
         curtainButton.snp.makeConstraints {
-            $0.top.equalTo(settingView.snp.top).offset(20)
-            $0.centerX.centerY.equalToSuperview()
-            $0.width.equalTo(260)
-            $0.height.equalTo(180)
-            
+//            $0.top.equalTo(settingView.snp.top).offset(20)
+//            $0.centerX.centerY.equalToSuperview()
+//            $0.width.equalTo(260)
+//            $0.height.equalTo(180)
+            $0.top.leading.trailing.bottom.equalTo(settingView).inset(8)
         }
         liarLable.snp.makeConstraints {
             $0.centerY.equalToSuperview().offset(-20)
@@ -371,9 +399,8 @@ extension LiarGameViewController {
             $0.centerX.equalToSuperview()
         }
         okButton.snp.makeConstraints {
-            $0.top.equalTo(liarLable).offset(60)
             $0.width.equalTo(40)
-            $0.centerX.equalToSuperview()
+            $0.centerX.centerY.equalTo(modeLabel)
         }
         
         [modeLeftButton, modeLabel, modeRightButton].forEach {
@@ -396,8 +423,8 @@ extension LiarGameViewController {
     func setTopicViewLayout() {
         topicViewLayout.scrollDirection = .vertical
         topicViewLayout.itemSize = CGSize(width: 80, height: 80)
-        //        topicViewLayout.minimumInteritemSpacing = 4
-        //        topicViewLayout.minimumLineSpacing = 8
-        topicViewLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        topicViewLayout.minimumInteritemSpacing = 4
+        topicViewLayout.minimumLineSpacing = 18
+        topicViewLayout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
     }
 }

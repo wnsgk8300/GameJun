@@ -26,7 +26,6 @@ class InitialQuizViewController: UIViewController {
     var movieTitle = String()
     var movieTitles = [""]
     let dismissButton = DismissButton()
-    
     let titleTextField = UITextField()
     
     //    var _out2:NSString = "";
@@ -36,14 +35,12 @@ class InitialQuizViewController: UIViewController {
         view.backgroundColor = .black
         nextButton.isHidden = true
     }
-    
-    
-    
-    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+         self.view.endEditing(true)
+   }
 }
 // MARK: - 초성 변환
 extension InitialQuizViewController {
-    
     func initial(movieTitle: NSString) -> String {
         var initial:String = "";
         for i in 0..<movieTitle.length{
@@ -181,7 +178,7 @@ extension InitialQuizViewController {
         
         movieTitleLabel.font = .systemFont(ofSize: 60)
         movieTitleLabel.textAlignment = .center
-        movieTitleLabel.numberOfLines = 2
+        movieTitleLabel.numberOfLines = 4
         movieTitleLabel.textColor = .white
         
         dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
@@ -189,7 +186,7 @@ extension InitialQuizViewController {
         titleTextField.placeholder = "제시어 입력!"
         titleTextField.backgroundColor = .white
         titleTextField.textAlignment = .center
-        
+        titleTextField.textColor = .black
     }
     
     final private func setLayout() {
@@ -213,30 +210,37 @@ extension InitialQuizViewController {
         movieTitleLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(140)
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
         }
         titleTextField.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
+            $0.centerX.equalToSuperview().offset(8)
             $0.bottom.equalTo(answerButton.snp.top).offset(-20)
             $0.width.equalTo(120)
         }
         answerButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(20)
+//            $0.bottom.equalTo(dismissButton.snp.top).offset(-160)
+            $0.centerY.equalToSuperview().offset(40)
+
         }
         myTitleButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(20)
+//            $0.bottom.equalTo(dismissButton.snp.top).offset(-160)
+            $0.centerY.equalToSuperview().offset(40)
+
         }
         nextButton.snp.makeConstraints {
             //            $0.centerX.equalToSuperview()
             //            $0.top.equalTo(answerButton.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview().offset(20)
+//            $0.bottom.equalTo(dismissButton.snp.top).offset(-160)
+            $0.centerY.equalToSuperview().offset(40)
+
         }
         
         dismissButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
+//            $0.centerY.equalToSuperview().offset(40)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }
