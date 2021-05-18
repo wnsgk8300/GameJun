@@ -33,12 +33,8 @@ extension MainTableViewCell {
         setLayout()
     }
     final private func setBasics() {
-//        gameTitleLabel.font = gameTitleLabel.font.withSize(24)
         gameTitleLabel.font = UIFont.boldSystemFont(ofSize: 24.0)
-
         gameTitleLabel.textColor = .white
-        
-//        gameImageView.backgroundColor = .white
     }
     final private func setLayout() {
         [gameTitleLabel, gameImageView].forEach {

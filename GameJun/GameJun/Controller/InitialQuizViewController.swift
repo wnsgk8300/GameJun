@@ -10,8 +10,6 @@ import SnapKit
 
 class InitialQuizViewController: UIViewController {
     
-    
-    
     let createButton = UIButton()
     let startButton = UIButton()
     let customQuizButton = UIButton()
@@ -28,42 +26,42 @@ class InitialQuizViewController: UIViewController {
     let dismissButton = DismissButton()
     let titleTextField = UITextField()
     
-    //    var _out2:NSString = "";
     override func viewDidLoad() {
         super.viewDidLoad()
         setUI()
         view.backgroundColor = .black
         nextButton.isHidden = true
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
          self.view.endEditing(true)
    }
+    
     @objc
     func dissmissKeyboard() {
         view.endEditing(true)
     }
 }
+
 // MARK: - 초성 변환
 extension InitialQuizViewController {
-    func initial(movieTitle: NSString) -> String {
+    func initial(movieTitle: String) -> String {
         var initial:String = "";
-        for i in 0..<movieTitle.length{
-            let oneChar:UniChar = movieTitle.character(at:i)
+        let title = movieTitle as NSString
+        for i in 0..<title.length{
+            let oneChar:UniChar = title.character(at:i)
             if( oneChar >= 0xAC00 && oneChar <= 0xD7A3 ){
                 var firstCodeValue = ((oneChar - 0xAC00)/28)/21
                 firstCodeValue += 0x1100;
                 initial = initial.appending(String(format:"%C", firstCodeValue))
-                //                _out2 = _out2.appendingFormat("%C", firstCodeValue)
             }else{
                 initial = initial.appending(String(format:"%C", oneChar))
-                //                _out2 = _out2.appendingFormat("%C", oneChar)
             }
         }
-        //        print(initial)
-        //        print(_out2)
         return initial
     }
 }
+
 extension InitialQuizViewController {
     @objc
     func tapMainButton(_ sender: UIButton) {
@@ -73,7 +71,7 @@ extension InitialQuizViewController {
             nextButton.isHidden = false
             movieTitles = InitialQuizManager.shared.movieTitle
             movieTitle = movieTitles.randomElement() ?? ""
-            movieTitleLabel.text = initial(movieTitle: movieTitle as NSString)
+            movieTitleLabel.text = initial(movieTitle: movieTitle)
             nextButton.isHidden = true
             titleTextField.isHidden = true
             myTitleButton.isHidden = true
@@ -88,6 +86,7 @@ extension InitialQuizViewController {
             fatalError()
         }
     }
+    
     @objc
     func tapGameButton(_ sender: UIButton) {
         view.endEditing(true)
@@ -108,7 +107,7 @@ extension InitialQuizViewController {
                 } else {
                     answerButton.isHidden = false
                     movieTitle = movieTitles.randomElement() ?? ""
-                    movieTitleLabel.text = initial(movieTitle: movieTitle as NSString)
+                    movieTitleLabel.text = initial(movieTitle: movieTitle)
                 }
                 if nextButton.titleLabel?.text == "확인" {
                     //                gameView.isHidden = true
@@ -117,7 +116,7 @@ extension InitialQuizViewController {
                 }
             case myTitleButton:
                 myTitle = titleTextField.text ?? ""
-                movieTitleLabel.text = initial(movieTitle: myTitle as NSString)
+                movieTitleLabel.text = initial(movieTitle: myTitle)
             default:
                 fatalError()
             }
@@ -134,7 +133,7 @@ extension InitialQuizViewController {
                     movieTitleLabel.text = "제시어를 입력하세요"
                 } else {
                     myTitle = titleTextField.text ?? ""
-                    movieTitleLabel.text = initial(movieTitle: myTitle as NSString)
+                    movieTitleLabel.text = initial(movieTitle: myTitle)
                     myTitleButton.isHidden = true
                     titleTextField.isHidden = true
                     answerButton.isHidden = false
@@ -144,9 +143,18 @@ extension InitialQuizViewController {
             }
         }
     }
+    
     @objc
     func tapDismissButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: - Delegate
+extension InitialQuizViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.tapGameButton(self.myTitleButton)
+        return true
     }
 }
 
@@ -192,6 +200,7 @@ extension InitialQuizViewController {
         titleTextField.backgroundColor = .white
         titleTextField.textAlignment = .center
         titleTextField.textColor = .black
+        titleTextField.delegate = self
     }
     
     final private func setLayout() {
@@ -209,6 +218,7 @@ extension InitialQuizViewController {
         gameView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
         [movieTitleLabel, answerButton, nextButton, titleTextField, myTitleButton].forEach {
             gameView.addSubview($0)
         }
@@ -224,28 +234,18 @@ extension InitialQuizViewController {
         }
         answerButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-//            $0.bottom.equalTo(dismissButton.snp.top).offset(-160)
             $0.centerY.equalToSuperview().offset(40)
-
         }
         myTitleButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-//            $0.bottom.equalTo(dismissButton.snp.top).offset(-160)
             $0.centerY.equalToSuperview().offset(40)
-
         }
         nextButton.snp.makeConstraints {
-            //            $0.centerX.equalToSuperview()
-            //            $0.top.equalTo(answerButton.snp.bottom).offset(24)
             $0.centerX.equalToSuperview()
-//            $0.bottom.equalTo(dismissButton.snp.top).offset(-160)
             $0.centerY.equalToSuperview().offset(40)
-
         }
-        
         dismissButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-//            $0.centerY.equalToSuperview().offset(40)
             $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
     }

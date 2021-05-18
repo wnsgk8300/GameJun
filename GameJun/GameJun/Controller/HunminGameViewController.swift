@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class HunminGameViewController: UIViewController {
+    
     let initial = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]
     let initialLabel = UILabel()
     let startButton = playButton()
@@ -20,12 +21,14 @@ class HunminGameViewController: UIViewController {
         view.backgroundColor = .black
         setUI()
     }
+    
     func gameStart() {
-            initialLabel.text = ""
-            initialLabel.text?.append(initial.randomElement() ?? "")
-            initialLabel.text?.append(initial.randomElement() ?? "")
+        initialLabel.text = ""
+        initialLabel.text?.append(initial.randomElement() ?? "")
+        initialLabel.text?.append(initial.randomElement() ?? "")
     }
 }
+
 // MARK: - Selector
 extension HunminGameViewController {
     @objc
@@ -37,12 +40,14 @@ extension HunminGameViewController {
         self.dismiss(animated: true, completion: nil)
     }
 }
+
 // MARK: - UI
 extension HunminGameViewController {
     final private func setUI() {
         setBasics()
         setLayout()
     }
+    
     final private func setBasics() {
         startButton.addTarget(self, action: #selector(tapStartButton(_:)), for: .touchUpInside)
         startButton.imageName = "3"
@@ -56,8 +61,9 @@ extension HunminGameViewController {
         initialLabel.layer.borderWidth = 2
         
         dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
-
+        
     }
+    
     final private func setLayout() {
         [initialLabel, startButton, dismissButton].forEach {
             view.addSubview($0)

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class LiarGameViewController: UIViewController {
+    
     let topicView = UIView()
     let topicLabel = UILabel()
     let setTopicLabel = UILabel()
@@ -42,6 +43,7 @@ class LiarGameViewController: UIViewController {
     var spyNum = 0
     var liarText = ""
     var unSelected = [""]
+    var newTopics = LiarGameManager.shared.topicText
     
     var countParticipants = 0
     let dismissButton = DismissButton()
@@ -53,8 +55,8 @@ class LiarGameViewController: UIViewController {
         selectTopicView.isHidden = true
         gameStartView.isHidden = true
         setTopicLabel.text = "영화"
-        
     }
+    
     func modeFunction() {
         switch modeLabel.text {
         case "노말 모드":
@@ -68,6 +70,7 @@ class LiarGameViewController: UIViewController {
         }
     }
 }
+
 // MARK: - Datasource, Delegate
 extension LiarGameViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -86,8 +89,10 @@ extension LiarGameViewController: UICollectionViewDataSource {
         return cell
     }
 }
+
 // MARK: - Selector
 extension LiarGameViewController {
+    
     @objc
     func tapChangeButton(_ sender: UIButton) {
         if selectTopicView.isHidden {
@@ -109,22 +114,32 @@ extension LiarGameViewController {
     }
     @objc
     func tapStartButton(_ sender: UIButton) {
-        liarText = LiarGameManager.shared.topicText["\(setTopicLabel.text ?? "")"]?.randomElement() ?? ""
-        gameStartView.isHidden = false
-        changeButton.isHidden = true
-        countParticipants = participants
+        if newTopics["\(setTopicLabel.text ?? "")"]?.count == 0 {
+            newTopics["\(setTopicLabel.text ?? "")"] = LiarGameManager.shared.topicText["\(setTopicLabel.text ?? "")"]
+            liarText = newTopics["\(setTopicLabel.text ?? "")"]?.randomElement() ?? ""
+            newTopics["\(setTopicLabel.text ?? "")"]?.removeAll(where: { $0 == liarText })
+        } else {
+            liarText = newTopics["\(setTopicLabel.text ?? "")"]?.randomElement() ?? ""
+            newTopics["\(setTopicLabel.text ?? "")"]?.removeAll(where: { $0 == liarText })
+        }
         liarLable.text = liarText
+        
+        var selceted = LiarGameManager.shared.topicText["\(setTopicLabel.text ?? "")"] ?? [""]
+        selceted.removeAll(where: { $0 == liarText })
+        unSelected = selceted
+        
+        countParticipants = participants
         liarNum = Int.random(in: 1 ... participants)
         spyNum = Int.random(in: 1 ... participants)
         while spyNum == liarNum
         {
             spyNum = Int.random(in: 1 ... participants)
         }
+        
         curtainButton.isHidden = false
-        var selceted = LiarGameManager.shared.topicText["\(setTopicLabel.text ?? "")"] ?? [""]
-        selceted.removeAll(where: { $0 == liarText })
-        unSelected = selceted
         selectTopicView.isHidden = true
+        gameStartView.isHidden = false
+        changeButton.isHidden = true
         startButton.isEnabled = false
     }
     @objc
@@ -261,8 +276,6 @@ extension LiarGameViewController {
         modeLabel.textColor = .white
         modeLeftButton.setImage(UIImage(systemName: "arrowtriangle.left.fill"), for: .normal)
         modeRightButton.setImage(UIImage(systemName: "arrowtriangle.right.fill"), for: .normal)
-//        modeLeftButton.setImage(UIImage(named: "redLeft"), for: .normal)
-//        modeRightButton.setImage(UIImage(named: "redRight"), for: .normal)
         modeLeftButton.addTarget(self, action: #selector(tapModeLeftButton), for: .touchUpInside)
         modeRightButton.addTarget(self, action: #selector(tapModeRightButton), for: .touchUpInside)
         
@@ -295,41 +308,27 @@ extension LiarGameViewController {
         modeExplainLabel.numberOfLines = 3
         modeExplainLabel.font = .systemFont(ofSize: 12)
     }
+    
     func setBasic() {
         [setTopicLabel, topicLabel, changeButton, settingView, selectTopicView, gameStartView, startButton, dismissButton, modeExplainLabel].forEach {
             view.addSubview($0)
         }
-//        topicView.snp.makeConstraints {
-//            $0.top.equalToSuperview().offset(80)
-//            $0.centerX.equalToSuperview()
-//            $0.width.equalTo(240)
-//            $0.height.equalTo(100)
-//        }
         selectTopicView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(setTopicLabel.snp.bottom).offset(20)
             $0.width.height.equalTo(312)
         }
-        
-//        [topicLabel, setTopicLabel, changeButton].forEach {
-//            topicView.addSubview($0)
-//        }
         setTopicLabel.snp.makeConstraints {
-//            $0.top.bottom.equalToSuperview().inset(24)
-//            $0.leading.equalTo(topicLabel.snp.trailing).offset(40)
             $0.centerX.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(80)
             $0.width.equalTo(100)
             $0.height.equalTo(60)
         }
         topicLabel.snp.makeConstraints {
-//            $0.top.leading.bottom.equalToSuperview().inset(24)
             $0.centerY.equalTo(setTopicLabel)
             $0.trailing.equalTo(setTopicLabel.snp.leading).offset(-20)
         }
-        
         changeButton.snp.makeConstraints {
-//            $0.top.trailing.bottom.equalToSuperview().inset(24)
             $0.centerY.equalTo(setTopicLabel)
             $0.leading.equalTo(setTopicLabel.snp.trailing).offset(40)
             $0.width.equalTo(80)
@@ -345,7 +344,6 @@ extension LiarGameViewController {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(settingView.snp.bottom).offset(4)
         }
-        
         startButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.centerY.equalToSuperview().offset(120)
@@ -387,10 +385,6 @@ extension LiarGameViewController {
             gameStartView.addSubview($0)
         }
         curtainButton.snp.makeConstraints {
-//            $0.top.equalTo(settingView.snp.top).offset(20)
-//            $0.centerX.centerY.equalToSuperview()
-//            $0.width.equalTo(260)
-//            $0.height.equalTo(180)
             $0.top.leading.trailing.bottom.equalTo(settingView).inset(8)
         }
         liarLable.snp.makeConstraints {

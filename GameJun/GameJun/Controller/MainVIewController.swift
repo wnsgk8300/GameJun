@@ -13,7 +13,6 @@ class MainVIewController: UIViewController {
     let titleImage = UIImageView()
     let bottomImageView = UIImageView()
     let games = ["라이어 게임", "영화 초성퀴즈", "훈민정음 게임", "폭탄 돌리기"]
-//    let gameImages = ["LiarGame", "InitialQuiz", "HunminGame", "TimerGame"]
     let gameImages = ["1", "2", "3", "4"]
     let bottomImage = UIImage(named: "BottomImage3")
     let mainBackColor = UIColor.black
@@ -22,7 +21,7 @@ class MainVIewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = mainBackColor
         self.modalPresentationStyle = .overFullScreen
-
+        
         menuTableView.register(MainTableViewCell.self, forCellReuseIdentifier: MainTableViewCell.identifier)
         menuTableView.dataSource = self
         menuTableView.delegate = self
@@ -49,10 +48,9 @@ extension MainVIewController: UITableViewDelegate {
             fatalError()
         }
         present(nextVC, animated: true, completion: nil)
-
     }
-    
 }
+
 // MARK: - DataSource
 extension MainVIewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,8 +64,6 @@ extension MainVIewController: UITableViewDataSource {
         menuCell.selectionStyle =  .none
         return menuCell
     }
-    
-    
 }
 
 // MARK: - UI
@@ -85,8 +81,8 @@ extension MainVIewController {
         menuTableView.backgroundColor = mainBackColor
         
         bottomImageView.image = bottomImage
-
     }
+    
     final private func setLayout() {
         [menuTableView ,titleImage, bottomImageView].forEach {
             view.addSubview($0)
@@ -103,7 +99,6 @@ extension MainVIewController {
             $0.height.equalTo(120)
         }
         bottomImageView.snp.makeConstraints {
-//            $0.top.equalTo(menuTableView.snp.bottom).offset(20)
             $0.height.equalTo(140)
             $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
