@@ -38,6 +38,10 @@ class InitialQuizViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
          self.view.endEditing(true)
    }
+    @objc
+    func dissmissKeyboard() {
+        view.endEditing(true)
+    }
 }
 // MARK: - 초성 변환
 extension InitialQuizViewController {
@@ -86,6 +90,7 @@ extension InitialQuizViewController {
     }
     @objc
     func tapGameButton(_ sender: UIButton) {
+        view.endEditing(true)
         if gameView.tag == 0 {
             switch sender {
             case answerButton:

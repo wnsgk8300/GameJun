@@ -57,6 +57,7 @@ extension TimerViewController {
     }
     @objc
     func tapButton(_ sender: UIButton) {
+        view.endEditing(true)
         if timeTextField.text == "" {
             
         } else {
