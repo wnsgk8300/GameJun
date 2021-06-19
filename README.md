@@ -1,2 +1,47 @@
-# GameJun
-<img src="https://user-images.githubusercontent.com/73565566/122004602-92e08e80-cdef-11eb-8b06-4d09760fe6bc.jpeg" width="200" height="350"> <img src="https://user-images.githubusercontent.com/73565566/122004781-cae7d180-cdef-11eb-8114-c5e2b561199b.jpeg" width="200" height="350"><img src="https://user-images.githubusercontent.com/73565566/122004766-c8857780-cdef-11eb-875b-196b3cd39eff.jpeg" width="200" height="350"><img src="https://user-images.githubusercontent.com/73565566/122004786-cd4a2b80-cdef-11eb-969f-ad67229caf90.jpeg" width="200" height="350"><img src="https://user-images.githubusercontent.com/73565566/122004796-d0451c00-cdef-11eb-93d2-507f3c615dff.jpeg" width="200" height="350">
+# 게임이닭
+
+
+모임 자리에서 다함께 즐길 수 있는 간단한 게임 모음
+
+
+## Team Members
+
+- 전준하
+
+---
+
+## Architecture
+
+- MVC
+
+---
+
+## Requirements
+
+- Language
+  - Swift 5.0
+- Framework
+  - UIKit
+
+---
+
+## Dependencies
+
+- SnapKit
+
+---
+
+## MVP
+
+- 메인화면
+- 라이어게임
+- 훈민정음게임
+- 영화제목초성퀴즈
+- 타이머게임
+
+---
+
+## Demo
+
+<img src="https://user-images.githubusercontent.com/73565566/122635632-0fd97400-d120-11eb-8f58-02eed5222821.gif"  width="200" height="350" > <img src="https://user-images.githubusercontent.com/73565566/122635638-136cfb00-d120-11eb-810c-e65b17364e07.gif"  width="200" height="350" > <img src="https://user-images.githubusercontent.com/73565566/122635641-149e2800-d120-11eb-9c7a-c0639b750963.gif"  width="200" height="350" > <img src="https://user-images.githubusercontent.com/73565566/122635643-1667eb80-d120-11eb-8bd0-f8a9fdcf9bd8.gif"  width="200" height="350" >
+---
