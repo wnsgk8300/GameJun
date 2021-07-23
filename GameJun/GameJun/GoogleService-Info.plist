@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>840285663225-1u0h6ls0h3jboto9tlsk5f1m32h1v704.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.840285663225-1u0h6ls0h3jboto9tlsk5f1m32h1v704</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB3xIaku0wB28dwWwrqI5bkY1mY16syw0o</string>
+	<key>GCM_SENDER_ID</key>
+	<string>840285663225</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.gmail.wnsgk830.GameJun</string>
+	<key>PROJECT_ID</key>
+	<string>gamejun-8525b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gamejun-8525b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:840285663225:ios:7f45c6868ffb1c1b7c5728</string>
+</dict>
+</plist>

@@ -33,7 +33,7 @@ class InitialQuizViewController: UIViewController {
         nextButton.isHidden = true
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          self.view.endEditing(true)
    }
     
@@ -45,6 +45,7 @@ class InitialQuizViewController: UIViewController {
 
 // MARK: - 초성 변환
 extension InitialQuizViewController {
+    
     func initial(movieTitle: String) -> String {
         var initial:String = "";
         let title = movieTitle as NSString
@@ -164,6 +165,7 @@ extension InitialQuizViewController {
         setBasics()
         setLayout()
     }
+    
     final private func setBasics() {
         [startButton, createButton].forEach {
             $0.addTarget(self, action: #selector(tapMainButton(_:)), for: .touchUpInside)

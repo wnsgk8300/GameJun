@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class MainVIewController: UIViewController {
+    
     let menuTableView = UITableView()
     let titleImage = UIImageView()
     let bottomImageView = UIImageView()
@@ -33,6 +34,7 @@ extension MainVIewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = mainBackColor
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var nextVC = UIViewController()
         switch indexPath.row {
@@ -72,6 +74,7 @@ extension MainVIewController {
         setBasics()
         setLayout()
     }
+    
     final private func setBasics() {
         titleImage.image = UIImage(named: "title")
         

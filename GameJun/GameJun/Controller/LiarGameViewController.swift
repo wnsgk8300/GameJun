@@ -92,7 +92,6 @@ extension LiarGameViewController: UICollectionViewDataSource {
 
 // MARK: - Selector
 extension LiarGameViewController {
-    
     @objc
     func tapChangeButton(_ sender: UIButton) {
         if selectTopicView.isHidden {
@@ -105,6 +104,7 @@ extension LiarGameViewController {
             modeExplainLabel.isHidden = false
         }
     }
+    
     @objc
     func tapTopicButton(_ sender: UIButton) {
         startButton.isHidden = false
@@ -112,6 +112,7 @@ extension LiarGameViewController {
         setTopicLabel.text = sender.titleLabel?.text
         selectTopicView.isHidden = true
     }
+    
     @objc
     func tapStartButton(_ sender: UIButton) {
         if newTopics["\(setTopicLabel.text ?? "")"]?.count == 0 {
@@ -142,11 +143,13 @@ extension LiarGameViewController {
         changeButton.isHidden = true
         startButton.isEnabled = false
     }
+    
     @objc
     func tapCountUpButton(_ sender: UIButton) {
         participants += 1
         participantsNumberLabel.text = "\(participants)명"
     }
+    
     @objc
     func tapCountDownButton(_ sender: UIButton) {
         if participants == 3 {
@@ -156,6 +159,7 @@ extension LiarGameViewController {
             participantsNumberLabel.text = "\(participants)명"
         }
     }
+    
     @objc
     func tapModeLeftButton(_ sender: UIButton) {
         if modeChangeIndex != 0{
@@ -167,6 +171,7 @@ extension LiarGameViewController {
         }
         modeFunction()
     }
+    
     @objc
     func tapModeRightButton(_ sender: UIButton) {
         if modeChangeIndex != 2 {
@@ -178,6 +183,7 @@ extension LiarGameViewController {
         }
         modeFunction()
     }
+    
     @objc
     func tapCurtainButton(_ sender: UIButton) {
         if countParticipants == liarNum {
@@ -200,6 +206,7 @@ extension LiarGameViewController {
            liarLable.text?.append("\n당신은 '스파이'입니다!")
        }
     }
+    
     @objc
     func tapOkButton(_ sender: UIButton) {
         if countParticipants != 1 {
@@ -211,19 +218,21 @@ extension LiarGameViewController {
             startButton.isEnabled = true
         }
     }
+    
     @objc
     func tapDismissButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
 }
+
 extension LiarGameViewController {
     func setUI() {
         setBasic()
         setDetail()
         setTopicViewLayout()
     }
+    
     func setDetail() {
-//        topicView.backgroundColor = .red
         settingView.backgroundColor = .black
         selectTopicView.backgroundColor = .yellow
         gameStartView.backgroundColor = .black
@@ -265,8 +274,6 @@ extension LiarGameViewController {
         
         countUpButton.setImage(UIImage(systemName: "arrowtriangle.up.fill"), for: .normal)
         countDownButton.setImage(UIImage(systemName: "arrowtriangle.down.fill"), for: .normal)
-//        countUpButton.setImage(UIImage(named: "redUp"), for: .normal)
-//        countDownButton.setImage(UIImage(named: "redDown"), for: .normal)
         countUpButton.addTarget(self, action: #selector(tapCountUpButton(_:)), for: .touchUpInside)
         countDownButton.addTarget(self, action: #selector(tapCountDownButton(_:)), for: .touchUpInside)
         

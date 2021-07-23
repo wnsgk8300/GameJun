@@ -12,7 +12,7 @@ class DismissButton: UIButton {
     var borderWidth: CGFloat = 2.0
     var borderColor = UIColor.white.cgColor
     
-    override init(frame: CGRect){
+    override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
@@ -44,7 +44,7 @@ class playButton: UIButton {
         }
     }
     
-    override init(frame: CGRect){
+    override init(frame: CGRect) {
         super.init(frame: frame)
     }
     

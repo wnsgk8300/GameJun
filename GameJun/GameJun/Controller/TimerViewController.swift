@@ -33,20 +33,19 @@ class TimerViewController: UIViewController {
     }
     
     // 스크린 터치시 키보드 내리기
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
 }
 
 extension TimerViewController {
     @objc
-    func onTimerFires()
-    {
+    func onTimerFires() {
         timeLeft -= 1
         transform()
         if timeLeft <= 0 {
             bombImageView.stopAnimating()
-            bombImageView.image = UIImage(named: "pixelBoom")
+            bombImageView.image = UIImage(named: "boom")
             AudioServicesPlaySystemSound (systemSoundID)
             timer?.invalidate()
             timer = nil
@@ -62,7 +61,7 @@ extension TimerViewController {
         if timeTextField.text == "" {
             return
         } else {
-            bombImageView.image = UIImage(named: "pixelBomb")
+            bombImageView.image = UIImage(named: "bomb")
             timeLeft = Int(timeTextField.text ?? "0") ?? 0
             timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(onTimerFires), userInfo: nil, repeats: true)
             [button, timeTextField, secLabel, timerLabel].forEach {
@@ -71,6 +70,7 @@ extension TimerViewController {
             self.view.endEditing(true)
         }
     }
+    
     @objc
     func tapDismissButton(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
@@ -120,7 +120,7 @@ extension TimerViewController {
         timeTextField.delegate = self
         timeTextField.textColor = .black
 
-        bombImageView.image = UIImage(named: "pixelBomb")
+        bombImageView.image = UIImage(named: "bomb")
         
         dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
         secLabel.text = "초"

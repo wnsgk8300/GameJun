@@ -61,7 +61,6 @@ extension HunminGameViewController {
         initialLabel.layer.borderWidth = 2
         
         dismissButton.addTarget(self, action: #selector(tapDismissButton(_:)), for: .touchUpInside)
-        
     }
     
     final private func setLayout() {
